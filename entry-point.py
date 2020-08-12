@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # Run benchmarks for each directory and collect everything into a single JSON
     for directory in directories:
         os.chdir(directory)
-        # subprocess.run(["bash", "-x", "run.sh"])
+        subprocess.run(["bash", "-x", "run.sh"])
         for bench_result in glob.glob("*benchmark-results.json"):
             with open(bench_result, "r") as file:
                 dict_merge(result, json.loads(file.read()))
