@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import sys
 import subprocess
 import collections.abc
 import json
@@ -22,6 +23,9 @@ def dict_merge(dct, merge_dct):
 
 
 if __name__ == '__main__':
+    # If running as a Github Actions
+    os.chdir(sys.path[0])
+
     # Directories included into benchmarking suit
     directories = ["docker", "sample"]
 
@@ -31,7 +35,7 @@ if __name__ == '__main__':
     # Run benchmarks for each directory and collect everything into a single JSON
     for directory in directories:
         os.chdir(directory)
-        subprocess.run(["bash", "-x", "run.sh"])
+        # subprocess.run(["bash", "-x", "run.sh"])
         for bench_result in glob.glob("*benchmark-results.json"):
             with open(bench_result, "r") as file:
                 dict_merge(result, json.loads(file.read()))
@@ -41,4 +45,5 @@ if __name__ == '__main__':
     with open("benchmark-results.json", "w+") as file:
         file.write(json.dumps(result, indent=4, sort_keys=True))
     # Fill Github Action output variable
-    subprocess.run(["echo", f"::set-output name=report::benchmark-results.json"])
+    abs = os.path.abspath("benchmark-results.json")
+    subprocess.run(["echo", f"::set-output name=report::{abs}"])
