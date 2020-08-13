@@ -44,6 +44,7 @@ if __name__ == '__main__':
         os.chdir("..")
 
     # Get back to the initial workdir
+    print(f"Back to {workdir}")
     os.chdir(workdir)
 
     # Write result into a file
