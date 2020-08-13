@@ -43,9 +43,11 @@ if __name__ == '__main__':
                 dict_merge(result, json.loads(file.read()))
         os.chdir("..")
 
-    # Get back to the initial workdir
-    print(f"Back to {workdir}")
-    os.chdir(workdir)
+    # If running as a Github Action report results into the inital dir
+    if os.getenv("CI") == "true":
+        os.chdir(os.getenv("GITHUB_WORKSPACE"))
+        os.mkdir("report")
+        os.chdir("report")
 
     # Write result into a file
     with open("benchmark-results.json", "w+") as file:
