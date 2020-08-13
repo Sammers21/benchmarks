@@ -51,5 +51,4 @@ if __name__ == '__main__':
     with open("benchmark-results.json", "w+") as file:
         file.write(json.dumps(result, indent=4, sort_keys=True))
     # Fill Github Action output variable
-    abs = os.path.abspath("benchmark-results.json")
-    subprocess.run(["echo", f"::set-output name=report::{abs}"])
+    subprocess.run(["echo", f"::set-output name=report::benchmark-results.json"])
