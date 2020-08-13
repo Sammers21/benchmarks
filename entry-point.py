@@ -23,6 +23,8 @@ def dict_merge(dct, merge_dct):
 
 
 if __name__ == '__main__':
+    # Remember the dir to get back to in the end
+    workdir = os.getcwd()
     # Enter dir with actual script location
     os.chdir(sys.path[0])
 
@@ -41,9 +43,8 @@ if __name__ == '__main__':
                 dict_merge(result, json.loads(file.read()))
         os.chdir("..")
 
-    # If running as a Github Action report results into /github/workspace dir
-    if os.getenv("CI") == "true":
-        os.chdir("/github/workspace")
+    # Get back to the initial workdir
+    os.chdir(workdir)
 
     # Write result into a file
     with open("benchmark-results.json", "w+") as file:
